@@ -23,6 +23,49 @@
   text-shadow: 2rpx 2rpx 4rpx rgba(255, 71, 119, 0.2);
 }
 
+/* 历史记录摘要 */
+.history-summary {
+  margin-bottom: 30rpx;
+}
+
+.history-summary-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #FF4777;
+  display: block;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.history-stats {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #FF4777;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.stat-divider {
+  width: 1rpx;
+  height: 60rpx;
+  background: linear-gradient(180deg, #FFE0E9, #FFB6C1, #FFE0E9);
+}
+
 /* 开始阶段 */
 .game-desc {
   margin-bottom: 60rpx;

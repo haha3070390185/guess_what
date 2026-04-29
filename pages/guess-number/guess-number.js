@@ -14,11 +14,22 @@ Page({
     hintMessage: '',
     hintType: '',
     resultMessage: '',
-    hasHistory: false
+    hasHistory: false,
+    userHistory: {
+      totalGames: 0,
+      successGames: 0,
+      recentRecords: []
+    },
+    loading: false
   },
 
   onLoad() {
     this.resetGame()
+    this.loadUserHistory()
+  },
+
+  onShow() {
+    this.loadUserHistory()
   },
 
   resetGame() {
@@ -38,6 +49,57 @@ Page({
       hintType: '',
       resultMessage: '',
       hasHistory: false
+    })
+  },
+
+  loadUserHistory() {
+    this.setData({ loading: true })
+    
+    wx.cloud.callFunction({
+      name: 'getGameHistory',
+      data: {
+        gameType: 'number',
+        limit: 10
+      },
+      success: res => {
+        if (res.result.success) {
+          const data = res.result.data
+          this.setData({
+            userHistory: {
+              totalGames: data.total || 0,
+              successGames: data.successCount || 0,
+              recentRecords: data.records || []
+            }
+          })
+        }
+      },
+      fail: err => {
+        console.error('获取历史记录失败', err)
+      },
+      complete: () => {
+        this.setData({ loading: false })
+      }
+    })
+  },
+
+  saveGameRecord() {
+    const { targetNumber, attempts } = this.data
+    
+    wx.cloud.callFunction({
+      name: 'saveGameRecord',
+      data: {
+        gameType: 'number',
+        targetNumber: targetNumber,
+        attempts: attempts,
+        success: true
+      },
+      success: res => {
+        console.log('保存游戏记录成功', res)
+        this.loadUserHistory()
+      },
+      fail: err => {
+        console.error('保存游戏记录失败', err)
+      }
     })
   },
 
@@ -133,6 +195,8 @@ Page({
         hasHistory: true,
         resultMessage: this.getResultMessage(newAttempts)
       })
+
+      this.saveGameRecord()
       return
     } else if (guess < targetNumber) {
       hintMessage = '猜小了哦~ 再试试！'
@@ -204,5 +268,15 @@ Page({
 
   goBack() {
     wx.navigateBack()
+  },
+
+  formatDate(timestamp) {
+    if (!timestamp) return ''
+    const date = new Date(timestamp)
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    const hour = date.getHours().toString().padStart(2, '0')
+    const minute = date.getMinutes().toString().padStart(2, '0')
+    return `${month}-${day} ${hour}:${minute}`
   }
 })
