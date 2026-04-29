@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/guess-number/guess-number",
+    "pages/guess-color/guess-color"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FF6B9D",
+    "navigationBarTitleText": "猜什么",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFE6F0"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
