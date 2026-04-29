@@ -1,6 +1,6 @@
 Page({
   data: {
-    gamePhase: 'start', // start, setup, guessing, result
+    gamePhase: 'start',
     targetNumber: null,
     guessNumber: '',
     minRange: 1,
@@ -12,7 +12,9 @@ Page({
     setupNumber: '',
     showHint: false,
     hintMessage: '',
-    hintType: ''
+    hintType: '',
+    resultMessage: '',
+    hasHistory: false
   },
 
   onLoad() {
@@ -33,7 +35,9 @@ Page({
       setupNumber: '',
       showHint: false,
       hintMessage: '',
-      hintType: ''
+      hintType: '',
+      resultMessage: '',
+      hasHistory: false
     })
   },
 
@@ -109,11 +113,14 @@ Page({
       hintType = 'success'
       wx.vibrateShort()
       
-      const history = [...guessHistory, {
+      const historyItem = {
         number: guess,
         result: 'correct',
+        resultText: '✓ 正确',
         attempt: newAttempts
-      }]
+      }
+
+      const history = [...guessHistory, historyItem]
 
       this.setData({
         guessHistory: history,
@@ -122,7 +129,9 @@ Page({
         showHint: true,
         hintMessage,
         hintType,
-        guessNumber: ''
+        guessNumber: '',
+        hasHistory: true,
+        resultMessage: this.getResultMessage(newAttempts)
       })
       return
     } else if (guess < targetNumber) {
@@ -135,11 +144,14 @@ Page({
       newMax = Math.min(currentMax, guess - 1)
     }
 
-    const history = [...guessHistory, {
+    const historyItem = {
       number: guess,
       result: guess < targetNumber ? 'low' : 'high',
+      resultText: guess < targetNumber ? '↗ 小了' : '↘ 大了',
       attempt: newAttempts
-    }]
+    }
+
+    const history = [...guessHistory, historyItem]
 
     this.setData({
       guessHistory: history,
@@ -149,7 +161,8 @@ Page({
       showHint: true,
       hintMessage,
       hintType,
-      guessNumber: ''
+      guessNumber: '',
+      hasHistory: true
     })
 
     setTimeout(() => {
@@ -157,6 +170,16 @@ Page({
         showHint: false
       })
     }, 2000)
+  },
+
+  getResultMessage(attempts) {
+    if (attempts <= 3) {
+      return '💕 你们真有默契！'
+    } else if (attempts <= 5) {
+      return '💗 还不错哦~'
+    } else {
+      return '💖 再接再厉！'
+    }
   },
 
   showHint(message, type) {

@@ -1,5 +1,4 @@
 <view class="container">
-  <!-- 开始阶段 -->
   <view class="start-phase animate-fade-in" wx:if="{{gamePhase === 'start'}}">
     <view class="phase-header">
       <text class="phase-icon">🔢</text>
@@ -35,7 +34,6 @@
     </view>
   </view>
 
-  <!-- 设置答案阶段 -->
   <view class="setup-phase animate-fade-in" wx:if="{{gamePhase === 'setup'}}">
     <view class="phase-header">
       <text class="phase-icon">🤫</text>
@@ -69,14 +67,12 @@
     </view>
   </view>
 
-  <!-- 猜测阶段 -->
   <view class="guessing-phase animate-fade-in" wx:if="{{gamePhase === 'guessing'}}">
     <view class="phase-header">
       <text class="phase-icon">🤔</text>
       <text class="phase-title">猜数字</text>
     </view>
 
-    <!-- 范围提示 -->
     <view class="range-card card">
       <view class="range-display">
         <view class="range-item">
@@ -95,7 +91,6 @@
       </view>
     </view>
 
-    <!-- 输入和按钮 -->
     <view class="guess-card card">
       <view class="guess-input-wrapper">
         <input 
@@ -118,29 +113,26 @@
       </button>
     </view>
 
-    <!-- 提示信息 -->
-    <view class="hint-popup {{showHint ? 'show' : ''}}" wx:if="{{showHint}}">
+    <view class="hint-popup" wx:if="{{showHint}}">
       <view class="hint-content {{hintType}}">
         <text class="hint-text">{{hintMessage}}</text>
       </view>
     </view>
 
-    <!-- 猜测历史 -->
-    <view class="history-card card" wx:if="{{guessHistory.length > 0}}">
+    <view class="history-card card" wx:if="{{hasHistory}}">
       <text class="history-title">猜测记录</text>
       <view class="history-list">
         <view class="history-item" wx:for="{{guessHistory}}" wx:key="attempt">
           <text class="history-attempt">#{{item.attempt}}</text>
           <text class="history-number">{{item.number}}</text>
           <text class="history-result {{item.result}}">
-            {{item.result === 'low' ? '↗ 小了' : item.result === 'high' ? '↘ 大了' : '✓ 正确'}}
+            {{item.resultText}}
           </text>
         </view>
       </view>
     </view>
   </view>
 
-  <!-- 结果阶段 -->
   <view class="result-phase animate-fade-in" wx:if="{{gamePhase === 'result'}}">
     <view class="result-card card">
       <view class="result-icon">🎉</view>
@@ -158,7 +150,7 @@
       </view>
 
       <view class="result-message">
-        <text>{{attempts <= 3 ? '💕 你们真有默契！' : attempts <= 5 ? '💗 还不错哦~' : '💖 再接再厉！'}}</text>
+        <text>{{resultMessage}}</text>
       </view>
     </view>
 
