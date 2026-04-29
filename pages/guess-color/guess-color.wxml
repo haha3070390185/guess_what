@@ -1,0 +1,154 @@
+<view class="container">
+  <view class="start-phase animate-fade-in" wx:if="{{gamePhase === 'start'}}">
+    <view class="phase-header">
+      <text class="phase-icon">🎨</text>
+      <text class="phase-title">猜颜色游戏</text>
+    </view>
+    
+    <view class="game-desc card">
+      <text class="desc-title">游戏规则</text>
+      <view class="desc-steps">
+        <view class="step">
+          <text class="step-num">1</text>
+          <text class="step-text">一方选择一个颜色作为答案</text>
+        </view>
+        <view class="step">
+          <text class="step-num">2</text>
+          <text class="step-text">另一方从颜色中猜TA选的是哪个</text>
+        </view>
+        <view class="step">
+          <text class="step-num">3</text>
+          <text class="step-text">猜中即胜利，猜错可继续猜</text>
+        </view>
+      </view>
+      
+      <view class="color-preview">
+        <view class="preview-color" wx:for="{{previewColors}}" wx:key="id" 
+              style="background-color: {{item.color}};">
+        </view>
+      </view>
+      <text class="desc-tip">💕 共 {{colorsCount}} 种颜色可选</text>
+    </view>
+
+    <view class="start-btn-container">
+      <button class="btn-primary start-btn" bindtap="startSetup">
+        开始游戏 💕
+      </button>
+      <button class="btn-secondary back-btn" bindtap="goBack">
+        返回首页
+      </button>
+    </view>
+  </view>
+
+  <view class="setup-phase animate-fade-in" wx:if="{{gamePhase === 'setup'}}">
+    <view class="phase-header">
+      <text class="phase-icon">🤫</text>
+      <text class="phase-title">选择颜色</text>
+    </view>
+
+    <view class="setup-card card">
+      <text class="setup-tip">请选择你喜欢的颜色</text>
+      <text class="setup-subtip">交给TA来猜猜看~</text>
+      
+      <view class="color-grid">
+        <view class="color-item" wx:for="{{colors}}" wx:key="id" 
+              bindtap="selectTargetColor" data-id="{{item.id}}">
+          <view class="color-circle" style="background-color: {{item.color}};">
+          </view>
+          <text class="color-name">{{item.name}}</text>
+        </view>
+      </view>
+
+      <button class="btn-secondary cancel-btn" bindtap="goBack">取消</button>
+    </view>
+  </view>
+
+  <view class="guessing-phase animate-fade-in" wx:if="{{gamePhase === 'guessing'}}">
+    <view class="phase-header">
+      <text class="phase-icon">🤔</text>
+      <text class="phase-title">猜颜色</text>
+    </view>
+
+    <view class="info-card card">
+      <view class="info-display">
+        <view class="info-item">
+          <text class="info-label">目标颜色</text>
+          <view class="hidden-color">
+            <text class="question-mark">?</text>
+          </view>
+        </view>
+        <view class="info-item">
+          <text class="info-label">已猜次数</text>
+          <text class="info-value">{{attempts}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="guess-card card">
+      <text class="guess-tip">猜猜TA选的是哪个颜色？</text>
+      
+      <view class="color-grid">
+        <view class="color-item {{item.isDisabled ? 'disabled' : ''}}" wx:for="{{colors}}" wx:key="id"
+              bindtap="makeGuess" data-id="{{item.id}}">
+          <view class="color-circle {{item.isWrong ? 'wrong-color' : ''}}" style="background-color: {{item.color}};">
+            <text class="wrong-mark" wx:if="{{item.isWrong}}">✗</text>
+          </view>
+          <text class="color-name">{{item.name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="hint-popup" wx:if="{{showHint}}">
+      <view class="hint-content {{hintType}}">
+        <text class="hint-text">{{hintMessage}}</text>
+      </view>
+    </view>
+
+    <view class="history-card card" wx:if="{{hasHistory}}">
+      <text class="history-title">猜测记录</text>
+      <view class="history-list">
+        <view class="history-item" wx:for="{{guessHistory}}" wx:key="attempt">
+          <text class="history-attempt">#{{item.attempt}}</text>
+          <view class="history-color" style="background-color: {{item.color.color}};"></view>
+          <text class="history-name">{{item.color.name}}</text>
+          <text class="history-result {{item.result}}">
+            {{item.resultText}}
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="result-phase animate-fade-in" wx:if="{{gamePhase === 'result'}}">
+    <view class="result-card card">
+      <view class="result-icon">🎉</view>
+      <text class="result-title">恭喜猜对啦！</text>
+      
+      <view class="result-color-display">
+        <view class="result-color-circle" style="background-color: {{targetColor.color}};">
+        </view>
+        <text class="result-color-name">{{targetColor.name}}</text>
+      </view>
+
+      <view class="result-info">
+        <view class="info-item">
+          <text class="info-label">猜测次数</text>
+          <text class="info-value">{{attempts}} 次</text>
+        </view>
+      </view>
+
+      <view class="result-message">
+        <text>{{resultMessage}}</text>
+      </view>
+    </view>
+
+    <view class="result-btns">
+      <button class="btn-primary" bindtap="playAgain">
+        再玩一次 💕
+      </button>
+      <button class="btn-secondary" bindtap="goBack">
+        返回首页
+      </button>
+    </view>
+  </view>
+</view>

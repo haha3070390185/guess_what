@@ -1,0 +1,50 @@
+<view class="container animate-fade-in">
+  <!-- 漂浮的心形装饰 -->
+  <view class="floating-heart" wx:for="{{floatingHearts}}" wx:key="id" 
+        style="left:{{item.left}}; animation-delay:{{item.delay}}; width:{{item.size}}; height:{{item.size}};">
+  </view>
+
+  <!-- 标题区域 -->
+  <view class="header">
+    <view class="title-section">
+      <text class="emoji">💕</text>
+      <text class="main-title">猜什么</text>
+      <text class="emoji">💕</text>
+    </view>
+    <text class="subtitle">专属于你们的情侣小游戏</text>
+  </view>
+
+  <!-- 游戏选择卡片 -->
+  <view class="game-card-container">
+    <!-- 猜数字游戏 -->
+    <view class="game-card animate-pulse" bindtap="goToGuessNumber">
+      <view class="card-icon">
+        <text class="icon-text">🔢</text>
+      </view>
+      <view class="card-content">
+        <text class="card-title">猜数字</text>
+        <text class="card-desc">心中默念一个数字，让TA来猜</text>
+        <view class="card-tag">数字游戏</view>
+      </view>
+      <view class="card-arrow">➜</view>
+    </view>
+
+    <!-- 猜颜色游戏 -->
+    <view class="game-card animate-pulse" bindtap="goToGuessColor" style="animation-delay: 0.5s;">
+      <view class="card-icon color-icon">
+        <text class="icon-text">🎨</text>
+      </view>
+      <view class="card-content">
+        <text class="card-title">猜颜色</text>
+        <text class="card-desc">选择一个颜色，让TA猜猜看</text>
+        <view class="card-tag color-tag">颜色游戏</view>
+      </view>
+      <view class="card-arrow">➜</view>
+    </view>
+  </view>
+
+  <!-- 底部装饰 -->
+  <view class="footer">
+    <text class="footer-text">♥ 每一次猜测都是一次爱的互动 ♥</text>
+  </view>
+</view>
